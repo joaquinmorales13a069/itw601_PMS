@@ -15,28 +15,26 @@ def login():
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    """Register endpoint: create new user """
     data = request.get_json()
 
     email = data.get('email')
     password = data.get('password')
 
-    """Basic validation"""
+    # Basic validation
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
     
-    """Check if user already exists"""
+    # Check if the user already exists
     existing_user = mongo.db.users.find_one({"email": email})
     if existing_user:
         return jsonify({"error": "User already exists"}), 400
     
-    """Hash the password"""
+    # Hash the password
     hashed_password = generate_password_hash(password)
 
-    """Create a User object"""
+    # Create a new user instance
     new_user = User(email=email, password=hashed_password)
 
-    """Insert the user into the database"""
     mongo.db.users.insert_one({
         "email": new_user.email,
         "password": new_user.password
