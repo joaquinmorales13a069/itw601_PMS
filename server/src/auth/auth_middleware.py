@@ -1,4 +1,4 @@
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 from datetime import timedelta
 
 jwt = JWTManager()
