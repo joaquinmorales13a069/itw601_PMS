@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management System - Sign In</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="container">
+        <div class="image-section">
+            <h2 class="title">Patient Management System</h2>
+            <img src="PMS_1.jpg" alt="Medical Staff">
+        </div>
+
+        <div class="login-section">
+            <h2>Sign in</h2>
+            <p>If you don’t have an account, <a href="register.html" class="register-link">Register here!</a></p>
+
+            <form id="loginForm">
+                <label for="email">Email</label>
+                <div class="input-container">
+                    <i class="fas fa-envelope"></i>
+                    <img src="email_icon.jpg" width="20" height="20" alt="email icon">
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                </div>
+
+                <label for="password">Password</label>
+                <div class="input-container">
+                    <i class="fas fa-lock"></i>
+                    <img src="password_icon.jpg" width="20" height="20" alt="password icon">
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <img src="hideeye_icon.jpg" width="20" height="20" alt="hide eye icon">
+                    <i class="fas fa-eye" id="togglePassword"></i>
+                </div>
+
+                <div class="remember-forgot">
+                    <label><input type="checkbox" id="rememberMe"> Remember me</label>
+                    <a href="#">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            
+                <div class="center-text"  >or continue with </div>
+                <div class="social-icons">
+                <i class="fab fa-facebook-f"></i>
+                <img src="Facebook icon.jpg" width="20" height="20" alt="Facebook icon">
+                <i class="fab fa-twitter"></i>
+                <img src="Twitter icon.jpg" width="20" height="20" alt="Twitter icon">
+                <i class="fab fa-google"></i>
+                <img src="Google icon.jpg" width="20" height="20" alt="Google icon">
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
