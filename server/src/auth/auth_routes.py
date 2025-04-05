@@ -2,11 +2,10 @@ from flask import Blueprint, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from src import mongo
 from src.auth.auth_middleware import create_access_token
-from .user_model import User
+from .user_model import UserModel, UserRole
 
 # Create an auth blueprint
 auth_bp = Blueprint('auth', __name__)
-
 
 # Auth routes
 @auth_bp.route('/register', methods=['POST'])
@@ -15,6 +14,7 @@ def register():
 
     email = data.get('email')
     password = data.get('password')
+    role = data.get('role', UserRole.PATIENT.value)
 
     # Basic validation
     if not email or not password:
@@ -28,15 +28,34 @@ def register():
     # Hash the password
     hashed_password = generate_password_hash(password)
 
-    # Create a new user instance
-    new_user = User(email=email, password=hashed_password)
+    # Create a new user instance (no name field)
+    new_user = UserModel(email=email, password=hashed_password, role=role)
+    
+    # Convert to dictionary for database storage
+    user_dict = new_user.to_dict()
+    
+    # Insert user into the database
+    result = mongo.db.users.insert_one(user_dict)
+    user_id = result.inserted_id
+    
+    # If user is a patient, create an empty patient record
+    if role == UserRole.PATIENT.value:
+        # Create a minimal patient record linked to the user
+        # Only include user_id and email
+        patient_record = {
+            "user_id": str(user_id),
+            "email": email,
+            "created_at": new_user.created_at,
+            "updated_at": new_user.updated_at
+        }
+        
+        # Insert the basic patient record
+        mongo.db.patients.insert_one(patient_record)
 
-    mongo.db.users.insert_one({
-        "email": new_user.email,
-        "password": new_user.password
-    })
-
-    return jsonify({"message": "User created successfully"}), 201
+    return jsonify({
+        "message": "User created successfully",
+        "user_id": str(user_id)
+    }), 201
 
 @auth_bp.route('/login', methods=['POST'])
 def login_user():
@@ -61,11 +80,12 @@ def login_user():
     # Generate JWT token if email and password are valid
     token = create_access_token(identity=user['email'])
     
-    # Return token in the response body
+    # Return token in the response body with role info but without name
     return jsonify({
         "message": "Login successful",
         "token": token,
         "user": {
-            "email": user['email']
+            "email": user['email'],
+            "role": user.get('role', UserRole.PATIENT.value)
         }
     }), 200
