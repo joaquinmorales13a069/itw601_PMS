@@ -1,37 +1,30 @@
-from flask import Flask
-from flask_pymongo import PyMongo
-import os
-from dotenv import load_dotenv
-import sys
+from src import create_app, mongo
 
-# Initialize Flask app
-app = Flask(__name__)
+app = create_app()
 
-# Load environment variables from the .env file
-load_dotenv()
-mongo_uri = os.getenv("MONGO_URI")
-
-# Check if MONGO_URI is available
-if not mongo_uri:
-    print("ERROR: MONGO_URI environment variable not found. Check your .env file.")
-    sys.exit(1)
-
-app.config["MONGO_URI"] = mongo_uri
-
-try:
-    mongo = PyMongo(app)
-    # Test the connection
-    mongo.db.list_collection_names()
-    print("Successfully connected to MongoDB")
-except Exception as e:
-    print(f"ERROR connecting to MongoDB: {e}")
-    sys.exit(1)
-
-@app.route('/')
-def home():
-    # Example: fetching collection names
-    collections = mongo.db.list_collection_names()
-    return f"Collections in database: {collections}"
+@app.route('/db-status')
+def db_status():
+    try:
+        # Check if we can access the MongoDB server
+        mongo.db.command('ping')
+        return {
+            "status": "connected", 
+            "database": mongo.db.name,
+            "message": "Successfully connected to MongoDB"
+        }
+    except Exception as e:
+        return {
+            "status": "error", 
+            "message": f"Database connection error: {str(e)}"
+        }, 500
 
 if __name__ == '__main__':
+    try:
+        print(f"Connecting to database: {mongo.db.name}")
+        # Test the connection
+        mongo.db.command('ping')
+        print(f"Successfully connected to MongoDB database: {mongo.db.name}")
+    except Exception as e:
+        print(f"Database connection error: {str(e)}")
+    
     app.run(debug=True)
