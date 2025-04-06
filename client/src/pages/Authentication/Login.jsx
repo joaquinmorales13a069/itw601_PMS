@@ -1,6 +1,6 @@
 // Login.jsx
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
     FaEnvelope,
     FaLock,
@@ -96,12 +96,9 @@ const Login = () => {
                     <h2 className="text-2xl font-bold mb-3">Sign in</h2>
                     <p className="mb-4">
                         If you don’t have an account,{" "}
-                        <a
-                            href="/register"
-                            className="text-red-500 font-bold no-underline"
-                        >
-                            Register here!
-                        </a>
+                        <Link to={'/signUp'} className="text-red-500 font-bold no-underline">
+							Register here!
+                        </Link>
                     </p>
                     <form onSubmit={handleSubmit}>
                         <label
