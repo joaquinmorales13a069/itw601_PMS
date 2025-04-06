@@ -61,7 +61,7 @@ const Login = () => {
 
             if (token) {
                 localStorage.setItem("token", token);
-                navigate("/");
+                navigate("/patient/dashboard");
             }
         } catch (error) {
             if (error.response && error.response.data.message) {

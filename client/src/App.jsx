@@ -8,6 +8,7 @@ import {
 import Home from './pages/Home/Home'
 import Login from './pages/Authentication/Login'
 import SignUp from './pages/Authentication/SignUp'
+import PatientDashboard from './pages/Dashboards/PatientDashboard'
 
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
 				<Route path='/' element={<Home />} />
 				<Route path='/login' element={<Login />}/>
 				<Route path='/signup' element={<SignUp />}/>
+				<Route path='/patient/dashboard' element={<PatientDashboard />}/>
 			</Routes>
 		</Router>
     </div>
