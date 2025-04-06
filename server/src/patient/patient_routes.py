@@ -68,7 +68,7 @@ def get_patient(patient_id):
     return jsonify({"patient": patient}), 200
 
 # Update patient profile
-@patient_bp.route('/<patient_id>', methods=['PUT'])
+@patient_bp.route('/update/<patient_id>', methods=['PUT'])
 @jwt_required()
 def update_patient(patient_id):
     # Get the current user's email from the JWT token

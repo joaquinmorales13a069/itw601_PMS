@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_pymongo import PyMongo
+from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 from src.config import config
@@ -30,6 +31,9 @@ def create_app(config_name='default'):
     
     # Initialize MongoDB with the app
     mongo.init_app(app)
+
+    # Enable CORS
+    CORS(app, resources={r"/*": {"origins": "*"}})
 
     # Initialize JWT manager
     init_jwt(app)
