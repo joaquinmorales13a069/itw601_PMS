@@ -9,6 +9,12 @@ import {
     FaFacebookF,
     FaTwitter,
     FaGoogle,
+    FaCalendarAlt,
+    FaMapMarkerAlt,
+    FaEnvelopeOpenText,
+    FaGlobeAmericas,
+    FaCity,
+    FaVenusMars,
 } from "react-icons/fa";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import axiosInstance from "../../utils/axiosInstance";
@@ -26,6 +32,13 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState(null);
+    const [dob, setDob] = useState("");
+    const [address, setAddress] = useState("");
+    const [postcode, setPostcode] = useState("");
+    const [stateVal, setStateVal] = useState("");
+    const [city, setCity] = useState("");
+    const [gender, setGender] = useState("");
+
 
     // navigate import
     const navigate = useNavigate();
@@ -69,6 +82,12 @@ const SignUp = () => {
                 email,
                 password,
                 name,
+                dob,
+                address,
+                postcode,
+                state,
+                city,
+                gender,
                 // Role is automatically set to patient on the server
             });
 
@@ -206,6 +225,98 @@ const SignUp = () => {
                                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </div>
                         </div>
+                        {/* Date of Birth */}
+                        <label htmlFor="dob" className="block mb-1 font-medium">Date of Birth</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaCalendarAlt className="mr-2 text-gray-600" />
+                            <input
+                                type="date"
+                                id="dob"
+                                required
+                                value={dob}
+                                onChange={(e) => setDob(e.target.value)}
+                                className="flex-grow border-none outline-none p-1"
+                            />
+                        </div>
+
+                        {/* Street Address */}
+                        <label htmlFor="address" className="block mb-1 font-medium">Street Address</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaMapMarkerAlt className="mr-2 text-gray-600" />
+                            <input
+                                type="text"
+                                id="address"
+                                required
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                placeholder="Enter your address"
+                                className="flex-grow border-none outline-none p-1"
+                            />
+                        </div>
+
+                        {/* Postcode */}
+                        <label htmlFor="postcode" className="block mb-1 font-medium">Postcode</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaEnvelopeOpenText className="mr-2 text-gray-600" />
+                            <input
+                                type="text"
+                                id="postcode"
+                                required
+                                value={postcode}
+                                onChange={(e) => setPostcode(e.target.value)}
+                                placeholder="Enter postcode"
+                                className="flex-grow border-none outline-none p-1"
+                            />
+                        </div>
+
+                        {/* State */}
+                        <label htmlFor="state" className="block mb-1 font-medium">State</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaGlobeAmericas className="mr-2 text-gray-600" />
+                            <input
+                                type="text"
+                                id="state"
+                                required
+                                value={stateVal}
+                                onChange={(e) => setStateVal(e.target.value)}
+                                placeholder="Enter state"
+                                className="flex-grow border-none outline-none p-1"
+                            />
+                        </div>
+
+                        {/* City */}
+                        <label htmlFor="city" className="block mb-1 font-medium">City</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaCity className="mr-2 text-gray-600" />
+                            <input
+                                type="text"
+                                id="city"
+                                required
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                placeholder="Enter city"
+                                className="flex-grow border-none outline-none p-1"
+                            />
+                        </div>
+
+                        {/* Gender */}
+                        <label htmlFor="gender" className="block mb-1 font-medium">Gender</label>
+                        <div className="flex items-center border-b-2 border-black my-2 p-1">
+                            <FaVenusMars className="mr-2 text-gray-600" />
+                            <select
+                                id="gender"
+                                required
+                                value={gender}
+                                onChange={(e) => setGender(e.target.value)}
+                                className="flex-grow border-none outline-none p-1 bg-transparent"
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
 
                         {/* Error message */}
                         {error && (
