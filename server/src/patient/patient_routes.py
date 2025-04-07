@@ -105,3 +105,39 @@ def update_patient(patient_id):
         return jsonify({"error": "Patient not found"}), 404
     
     return jsonify({"message": "Patient profile updated successfully"}), 200
+
+# Patient Dashboard
+@patient_bp.route('/dashboard', methods=['GET'])
+@jwt_required()
+def get_dashboard():
+    # Get the current user's email from the JWT token
+    current_user_email = get_jwt_identity()
+
+    # Get user info
+    user = mongo.db.users.find_one({"email": current_user_email})
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Check if user is a patient
+    if user.get("role") != "patient":
+        return jsonify({"error": "Only patients can access this dashboard"}), 403
+
+    # Find patient record associated with this user
+    patient = mongo.db.patients.find_one({"email": current_user_email})
+    if not patient:
+        return jsonify({"error": "Patient profile not found"}), 404
+
+    # Convert ObjectId to string for JSON serialization
+    patient["_id"] = str(patient["_id"])
+
+    # Prepare dashboard data
+    dashboard_data = {
+        "patient": patient,
+        "user": {
+            "email": user["email"],
+            "name": user.get("name"),
+            "role": user.get("role")
+        }
+    }
+
+    return jsonify(dashboard_data), 200

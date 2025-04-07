@@ -1,5 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import AuthLayout from "../../components/layouts/AuthLayout";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { validateEmail } from "../../utils/helper";
+
+// import images
+import AuthImage from "../../assets/images/PMS_1.jpg";
 import {
     FaEnvelope,
     FaLock,
@@ -16,13 +23,6 @@ import {
     FaCity,
     FaVenusMars,
 } from "react-icons/fa";
-import AuthLayout from "../../components/layouts/AuthLayout";
-import axiosInstance from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPaths";
-
-// import images
-import AuthImage from "../../assets/images/PMS_1.jpg";
-import { validateEmail } from "../../utils/helper";
 
 const SignUp = () => {
     const [email, setEmail] = useState("");
@@ -43,6 +43,7 @@ const SignUp = () => {
     // navigate import
     const navigate = useNavigate();
 
+    // API LOGIC FOR
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -76,18 +77,21 @@ const SignUp = () => {
             return;
         }
 
-        // API LOGIC
+        // API LOGIC FOR STORING PATIENT INFORMATION ON DATABASE
         try {
-            const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+            const response = await axiosInstance.post(API_PATHS.AUTH.SIGNUP, {
                 email,
                 password,
                 name,
-                dob,
-                address,
-                postcode,
-                state,
-                city,
-                gender,
+                patient_info: {
+                    full_name: name,
+                    date_of_birth: dob,
+                    address: address,
+                    postcode: postcode,
+                    state: stateVal,
+                    city: city,
+                    gender: gender
+                }
                 // Role is automatically set to patient on the server
             });
 
