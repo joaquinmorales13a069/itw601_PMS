@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 from .auth.auth_routes import auth_bp
 from .patient.patient_routes import patient_bp
+from .doctor.doctor_routes import doctor_bp
 
 # Create a main blueprint
 main_bp = Blueprint('main', __name__)
@@ -27,6 +28,7 @@ def register_routes(app):
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(patient_bp, url_prefix='/patient')
+    app.register_blueprint(doctor_bp, url_prefix='/doctor')
     
     # When you want to add more blueprints in the future, add them here
     # Example: app.register_blueprint(another_blueprint)
